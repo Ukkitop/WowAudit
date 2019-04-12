@@ -12,6 +12,25 @@ namespace wowAudit.ApiMethods
     public class getPlayerInfo
     {
 
+        public static Dictionary<string, string> getPlayerBaseInfo(string name, string realm, string region)
+        {
+            Dictionary<string, string> playerBaseInfo = new Dictionary<string, string>();
+            string apiPath = String.Format("https://raider.io/api/v1/characters/profile");
+            var client = new RestClient(apiPath);
+            var request = new RestRequest(Method.GET);
+            request.AddParameter("region", region);
+            request.AddParameter("realm", realm);
+            request.AddParameter("name", name);            
+            request.AddHeader("Accept", "application/json");
+            //request.AddHeader("authorization", "Bearer " + token.access_token);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode != System.Net.HttpStatusCode.OK) return null;
+            return null;
+
+
+        }
+        
+
         public static float getRaiderIOScore(string name, string realm, string region)
         {
             float score = 0;
