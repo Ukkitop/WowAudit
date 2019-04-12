@@ -1,0 +1,29 @@
+﻿
+@model Progress
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*Task<List<string>> wowheadItemsURLTask = Task<List<string>>.Factory.StartNew(() => getWowheadURL(ViewBag.PlayerInformation.items));
+*@
+    @foreach (string itemURL in Task<List<string>>.Factory.StartNew(() => wowAudit.ApiMethods.getPlayerInfo.getWowheadURL(ViewBag.PlayerInformation.items)).Result)
+    {
+        <li><a href="@itemURL"></a></li>
+
+    }
+    <li>RaiderIO: @ViewBag.playerInformation.raiderIOScore</li>
+
+    @foreach (Progress progress in ViewBag.playerInformation.progress)
+    {<ul>
+            @progress.dungeon
+            <li>Normal: @progress.normalProgress</li>
+            <li>Heroic: @progress.heroicProgress</li>
+            <li>Mythic: @progress.mythicProgress</li>
+
+        </ul>
+    }
+
+
+

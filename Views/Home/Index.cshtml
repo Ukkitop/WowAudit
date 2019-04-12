@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    @model wowAudit.Models.GuildModel;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+
+<form asp-action="GuildSearchForm" method="post">
+    <p>
+        <label asp-for="guildName">Guild:</label>
+        <input asp-for="guildName" />
+    </p>
+    <p>
+        <label asp-for="guildRealm">Realm:</label>
+        <input asp-for="guildRealm" />
+    </p>
+    <p>
+        <label asp-for="guildRegion">guild Region:</label>
+        <input asp-for="guildRegion" />
+    </p>
+    <button type="submit">Search</button>
+</form>
+<br />
+<br />
+
+<form asp-action="PlayerDetails" method="post">
+    <p>
+        <label asp-for="guildName">PlayerName:</label>
+        <input asp-for="guildName" />
+    </p>
+    <p>
+        <label asp-for="guildRealm">Player Realm:</label>
+        <input asp-for="guildRealm" />
+    </p>
+    <p>
+        <label asp-for="guildRegion">Player Region:</label>
+        <input asp-for="guildRegion" />
+    </p>
+    <button type="submit">Search</button>
+</form>
+
+
+
