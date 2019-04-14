@@ -10,5 +10,6 @@ namespace wowAudit.Models
         public string name { get; set; }
         public string realm { get; set; }
         public string region { get; set; }
+        public int classRole { get; set;}
     }
 }

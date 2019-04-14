@@ -41,6 +41,7 @@ namespace wowAudit.ApiMethods
                             guildmember.name = characterObject["name"].ToString();
                             guildmember.realm = characterObject["realm"].ToString();
                             guildmember.region = guildRegion;
+                            guildmember.classRole = (int)characterObject["class"];
                             membersDictionary.Add(guildmember);
                             break;
                         default:

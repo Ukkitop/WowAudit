@@ -24,8 +24,15 @@ namespace wowAudit.ApiMethods
             request.AddHeader("Accept", "application/json");
             //request.AddHeader("authorization", "Bearer " + token.access_token);
             IRestResponse response = client.Execute(request);
-            if (response.StatusCode != System.Net.HttpStatusCode.OK) return null;
+            if (response.StatusCode != System.Net.HttpStatusCode.OK) return null;            
+            JObject playerInfo = JObject.Parse(response.Content);
+            foreach (JProperty property in playerInfo.Properties())
+            {
+                playerBaseInfo.Add(property.Name, property.Value.ToString());
+            }
             return null;
+
+            
 
 
         }

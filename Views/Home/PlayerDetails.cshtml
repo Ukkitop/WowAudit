@@ -16,7 +16,8 @@
 
     <li>ItemLVL: @ViewBag.PlayerInformation.items.averageItemLevelEquipped</li>
     <li>RaiderIO: @ViewBag.playerInformation.raiderIOScore</li>
-
+@if (ViewBag.playerInformation.progress != null)
+{
     @foreach (Progress progress in ViewBag.playerInformation.progress)
     {<ul>
             @progress.dungeon
@@ -26,6 +27,7 @@
 
         </ul>
     }
+}
 
 
 
