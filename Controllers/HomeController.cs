@@ -43,7 +43,10 @@ namespace wowAudit.Controllers
         public IActionResult PlayerDetailsGuildList(string name, string realm, string region)
         {
             AccessToken token = ApiMethods.authMethods.GetAccessToken();
-            ViewBag.PlayerInformation = ApiMethods.getPlayerInfo.getPlayerinfo(token, name, realm, region);
+            
+            Task<playerProfile> playerInfoTask = Task<playerProfile>.Factory.StartNew(() => ApiMethods.getPlayerInfo.getPlayerinfo(token, name, realm, region));
+            Task.WaitAll(playerInfoTask);
+            ViewBag.PlayerInformation = playerInfoTask.Result;
             return View("PlayerDetails");
         }
     }

@@ -30,7 +30,9 @@ namespace wowAudit.ApiMethods
             {
                 playerBaseInfo.Add(property.Name, property.Value.ToString());
             }
-            return null;
+
+
+            return playerBaseInfo;
 
             
 
@@ -173,10 +175,20 @@ namespace wowAudit.ApiMethods
             Task<Items> itemsTask = Task<Items>.Factory.StartNew(() => getPlayerItems(token, name, realm, region));
             Task<float> raiderIOTask = Task<float>.Factory.StartNew(() => getRaiderIOScore( name, realm, region));
             Task<List<Progress>> progressTask = Task<List<Progress>>.Factory.StartNew(() => getPlayerProgress(name, realm, region));
-            Task.WaitAll(itemsTask, raiderIOTask, progressTask);
+            Task<Dictionary<string, string>> baseinfoTask = Task<Dictionary<string, string>>.Factory.StartNew(() => getPlayerBaseInfo(name, realm, region));
+            Task.WaitAll(itemsTask, raiderIOTask, progressTask, baseinfoTask);
+            Dictionary<string, string> baseInfoDictionary = baseinfoTask.Result;            
             profile.items = itemsTask.Result;
             profile.raiderIOScore = raiderIOTask.Result;
             profile.progress = progressTask.Result;
+            profile.name = baseInfoDictionary["name"];
+            profile.race = baseInfoDictionary["race"];
+            profile.realm = baseInfoDictionary["realm"];
+            profile.gender = baseInfoDictionary["gender"];
+            profile.specName = baseInfoDictionary["active_spec_name"];
+            profile.thumbnail = baseInfoDictionary["thumbnail_url"];
+            profile.className = baseInfoDictionary["class"];
+            profile.faction = baseInfoDictionary["faction"];
             return profile;
         }
     }
