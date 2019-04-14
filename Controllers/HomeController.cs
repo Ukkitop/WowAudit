@@ -40,5 +40,11 @@ namespace wowAudit.Controllers
             ViewBag.PlayerInformation = ApiMethods.getPlayerInfo.getPlayerinfo(token, GuildRealmResponce.guildName, GuildRealmResponce.guildRealm, GuildRealmResponce.guildRegion);
             return View();
         }
+        public IActionResult PlayerDetailsGuildList(string name, string realm, string region)
+        {
+            AccessToken token = ApiMethods.authMethods.GetAccessToken();
+            ViewBag.PlayerInformation = ApiMethods.getPlayerInfo.getPlayerinfo(token, name, realm, region);
+            return View("PlayerDetails");
+        }
     }
 }

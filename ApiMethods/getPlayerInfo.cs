@@ -106,9 +106,10 @@ namespace wowAudit.ApiMethods
             List<item> itemList = items.getItemList();
             List<string> itemURLS = new List<string>();
             System.UriBuilder uriBuilder = new UriBuilder();
+            
             foreach (item item in itemList)
             {
-                
+                if (item == null) continue;
                 uriBuilder.Host = "en.wowhead.com";
                 uriBuilder.Scheme = "https";
                 try

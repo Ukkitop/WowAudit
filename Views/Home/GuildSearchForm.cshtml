@@ -3,12 +3,12 @@
 *@
 @{
 }
-@model guildMember
+
 
     <ul>
         @foreach (var member in ViewBag.membersDictionary)
-        {
-            <li><a asp-controller="Home" asp-action="PlayerDetails" asp-route-name="@member.name" asp-route-realm="@member.realm" asp-route-region="@member.region">@member.name</a></li>
+        {           
+            <li><a asp-controller="Home" asp-action="PlayerDetailsGuildList" asp-route-name="@member.name" asp-route-realm="@member.realm" asp-route-region="@member.region">@member.name</a></li>
         }
         @ViewBag.membersDictionary.Count
     </ul>

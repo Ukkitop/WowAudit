@@ -24,7 +24,7 @@ namespace wowAudit.Models
         public item trinket1 { get; set; }
         public item trinket2 { get; set; }
         public item mainHand { get; set; }
-        public item offHand { get; set; }
+        public item? offHand { get; set; }
 
         public List<item> itemList = new List<item>();
 
