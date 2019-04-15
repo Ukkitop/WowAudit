@@ -49,5 +49,20 @@ namespace wowAudit.Controllers
             ViewBag.PlayerInformation = playerInfoTask.Result;
             return View("PlayerDetails");
         }
+
+        public IActionResult GuildAudit(string playerComposition, string realm, string region)
+        {
+            // AccessToken token = ApiMethods.authMethods.GetAccessToken();
+
+            ViewBag.guildComposition = AuditMethods.guildComposition.GetGuildComposition(playerComposition, realm, region);
+            
+            
+            return View();
+        }
+
+        public IActionResult GuildAuditCreate()
+        {
+            return View();
+        }
     }
 }
