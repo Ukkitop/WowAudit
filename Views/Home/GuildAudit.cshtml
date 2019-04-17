@@ -6,6 +6,8 @@
 @*ViewBag.guildComposition*@
 
 @foreach(playerProfile player in ViewBag.guildComposition)
-{
+{    @if (player.name != null)
+    {
     <li>@player.name - @player.className - @player.specName - @player.items.averageItemLevelEquipped</li>
+    }
 }

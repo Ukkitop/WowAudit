@@ -16,7 +16,7 @@ namespace wowAudit.AuditMethods
             List<string> membersToAudit = composition.Split(',').ToList<string>();
             foreach(string member in membersToAudit)
             {
-                membersList.Add(Task<playerProfile>.Factory.StartNew(() => ApiMethods.getPlayerInfo.getPlayerinfo(token, member, realm, region)).Result);
+                membersList.Add(ApiMethods.getPlayerInfo.getPlayerinfo(token, member, realm, region));
             }
             //Task<playerProfile>.Factory.StartNew(() => getPlayerinfo(token, name, realm, region))
 

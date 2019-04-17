@@ -1,6 +1,5 @@
 ﻿
 @model Progress
-
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -8,20 +7,28 @@
 }
 @*Task<List<string>> wowheadItemsURLTask = Task<List<string>>.Factory.StartNew(() => getWowheadURL(ViewBag.PlayerInformation.items));
 *@
-    <div class="col-md-4">
-        <li>@ViewBag.PlayerInformation.name - @ViewBag.PlayerInformation.realm - @ViewBag.PlayerInformation.faction</li>
-        <li>@ViewBag.PlayerInformation.className - @ViewBag.PlayerInformation.specName</li>
-        <li>@ViewBag.PlayerInformation.race - @ViewBag.PlayerInformation.gender</li>
-        <img src="@ViewBag.PlayerInformation.thumbnail" />
-    </div>
-    @foreach (string itemURL in Task<List<string>>.Factory.StartNew(() => wowAudit.ApiMethods.getPlayerInfo.getWowheadURL(ViewBag.PlayerInformation.items)).Result)
-    {
-        <li><a href="@itemURL"></a></li>
+<div class="col-md-4">
+    <li>@ViewBag.PlayerInformation.name - @ViewBag.PlayerInformation.realm - @ViewBag.PlayerInformation.faction</li>
+    <li>@ViewBag.PlayerInformation.className - @ViewBag.PlayerInformation.specName</li>
+    <li>@ViewBag.PlayerInformation.race - @ViewBag.PlayerInformation.gender</li>
+    <img src="@ViewBag.PlayerInformation.thumbnail" />
+</div>
+@foreach (string itemURL in Task<List<string>>.Factory.StartNew(() => wowAudit.ApiMethods.getPlayerInfo.getWowheadURLItems(ViewBag.PlayerInformation.items)).Result)
+{
+    <li><a href="@itemURL"></a></li>
 
-    }
+}
+<br /><br />
+<br />
+<br />
+@foreach (MountModel mount in ViewBag.PlayerInformation.mounts.collected)
+{
+    <li><a href="en.wowhead.com/spell=@mount.spellId" ></a></li>
 
-    <li>ItemLVL: @ViewBag.PlayerInformation.items.averageItemLevelEquipped</li>
-    <li>RaiderIO: @ViewBag.playerInformation.raiderIOScore</li>
+}
+
+<li>ItemLVL: @ViewBag.PlayerInformation.items.averageItemLevelEquipped</li>
+<li>RaiderIO: @ViewBag.playerInformation.raiderIOScore</li>
 @if (ViewBag.playerInformation.progress != null)
 {
     @foreach (Progress progress in ViewBag.playerInformation.progress)

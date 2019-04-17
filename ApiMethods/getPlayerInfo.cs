@@ -30,13 +30,7 @@ namespace wowAudit.ApiMethods
             {
                 playerBaseInfo.Add(property.Name, property.Value.ToString());
             }
-
-
             return playerBaseInfo;
-
-            
-
-
         }
         
 
@@ -94,7 +88,7 @@ namespace wowAudit.ApiMethods
             dynamic obj = JObject.Parse(response.Content);
 
             JObject progressArray = JObject.Parse(obj.raid_progression.ToString());
-
+            
             
                 foreach (JProperty CharProperty in progressArray.Properties())
                 {
@@ -110,7 +104,7 @@ namespace wowAudit.ApiMethods
             return progressList;
         }
 
-        public static List<string> getWowheadURL(Items items)
+        public static List<string> getWowheadURLItems(Items items)
         {
             List<item> itemList = items.getItemList();
             List<string> itemURLS = new List<string>();
@@ -154,33 +148,37 @@ namespace wowAudit.ApiMethods
             return itemURLS;
         }
 
-        public static Items getPlayerItems(AccessToken token, string name, string realm, string region)
+        public static Dictionary<string, object> getPlayerAdditionalInfo(AccessToken token, string name, string realm, string region)
         {
+            Dictionary<string, object> additionalinfo = new Dictionary<string, object>();
             string apiPath = String.Format("https://{0}.api.blizzard.com/wow/character/{1}/{2}", region, realm, name);
             var client = new RestClient(apiPath);
             var request = new RestRequest(Method.GET);
-            request.AddParameter("fields", "items");
+            request.AddParameter("fields", "items, mounts");
             request.AddHeader("Accept", "application/json");
 
             request.AddHeader("authorization", "Bearer " + token.access_token);
             IRestResponse response = client.Execute(request);
 
             Items items = JsonConvert.DeserializeObject<Items>(JObject.Parse( response.Content)["items"].ToString());
-
-            return items;
+            Mounts mounts = JsonConvert.DeserializeObject<Mounts>(JObject.Parse(response.Content)["mounts"].ToString());
+            additionalinfo.Add("items", items);
+            additionalinfo.Add("mounts", mounts);
+            return additionalinfo;
         }
         public static playerProfile getPlayerinfo(AccessToken token, string name, string realm, string region)
         {
             playerProfile profile = new playerProfile();
-            Task<Items> itemsTask = Task<Items>.Factory.StartNew(() => getPlayerItems(token, name, realm, region));
+            Task<Dictionary<string, object>> itemsTask = Task<Dictionary<string, object>>.Factory.StartNew(() => getPlayerAdditionalInfo(token, name, realm, region));
             Task<float> raiderIOTask = Task<float>.Factory.StartNew(() => getRaiderIOScore( name, realm, region));
             Task<List<Progress>> progressTask = Task<List<Progress>>.Factory.StartNew(() => getPlayerProgress(name, realm, region));
             Task<Dictionary<string, string>> baseinfoTask = Task<Dictionary<string, string>>.Factory.StartNew(() => getPlayerBaseInfo(name, realm, region));
             Task.WaitAll(itemsTask, raiderIOTask, progressTask, baseinfoTask);
             Dictionary<string, string> baseInfoDictionary = baseinfoTask.Result;            
-            profile.items = itemsTask.Result;
+            profile.items = (Items)itemsTask.Result["items"];
+            profile.mounts = (Mounts)itemsTask.Result["mounts"];
             profile.raiderIOScore = raiderIOTask.Result;
-            profile.progress = progressTask.Result;
+            profile.progress = progressTask.Result;            
             profile.name = baseInfoDictionary["name"];
             profile.race = baseInfoDictionary["race"];
             profile.realm = baseInfoDictionary["realm"];
@@ -188,7 +186,7 @@ namespace wowAudit.ApiMethods
             profile.specName = baseInfoDictionary["active_spec_name"];
             profile.thumbnail = baseInfoDictionary["thumbnail_url"];
             profile.className = baseInfoDictionary["class"];
-            profile.faction = baseInfoDictionary["faction"];
+            profile.faction = baseInfoDictionary["faction"];  
             return profile;
         }
     }
