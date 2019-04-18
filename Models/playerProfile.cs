@@ -25,5 +25,6 @@ namespace wowAudit.Models
             public float raiderIOScore { get; set; }
             public List<Progress> progress { get; set; } 
             public Mounts mounts { get; set; }
-        }
+            public IList<Reputation> reputation { get; set; }
+    }
     }

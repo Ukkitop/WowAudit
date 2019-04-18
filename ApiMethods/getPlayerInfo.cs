@@ -154,7 +154,7 @@ namespace wowAudit.ApiMethods
             string apiPath = String.Format("https://{0}.api.blizzard.com/wow/character/{1}/{2}", region, realm, name);
             var client = new RestClient(apiPath);
             var request = new RestRequest(Method.GET);
-            request.AddParameter("fields", "items, mounts");
+            request.AddParameter("fields", "items, mounts, reputation");
             request.AddHeader("Accept", "application/json");
 
             request.AddHeader("authorization", "Bearer " + token.access_token);
@@ -162,8 +162,10 @@ namespace wowAudit.ApiMethods
 
             Items items = JsonConvert.DeserializeObject<Items>(JObject.Parse( response.Content)["items"].ToString());
             Mounts mounts = JsonConvert.DeserializeObject<Mounts>(JObject.Parse(response.Content)["mounts"].ToString());
+            IList <Reputation> reputation = JsonConvert.DeserializeObject<IList<Reputation>>(JObject.Parse(response.Content)["reputation"].ToString());
             additionalinfo.Add("items", items);
             additionalinfo.Add("mounts", mounts);
+            additionalinfo.Add("reputation", reputation);
             return additionalinfo;
         }
         public static playerProfile getPlayerinfo(AccessToken token, string name, string realm, string region)
